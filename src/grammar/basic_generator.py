@@ -81,7 +81,18 @@ class BasicGrammar:
         g.start_state = data["start_state"]
         g.effective_alphabet = set(data["effective_alphabet"])
         g.accept_states = set(data["accept_states"])
-        g.transitions = {int(k): v for k, v in data["transitions"].items()}
+        if "symbol_map" in data.keys():
+            g.transitions = {}
+            for k, v in data["transitions"].items():
+                g.transitions[int(k)] = {}
+                for kk, vv in v.items():
+                    if kk in data["symbol_maps"].keys():
+                        for newkk in data["symbol_maps"][kk]:
+                            g.transitions[int(k)][newkk] = int(vv)
+                    else:
+                        g.transitions[int(k)][kk] = int(vv)
+        else:
+            g.transitions = {int(k): {kk: int(vv) for kk, vv in v.items()} for k, v in data["transitions"].items()}
         return g
 
     def visualize(self):
