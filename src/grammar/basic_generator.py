@@ -86,8 +86,8 @@ class BasicGrammar:
             for k, v in data["transitions"].items():
                 g.transitions[int(k)] = {}
                 for kk, vv in v.items():
-                    if kk in data["symbol_maps"].keys():
-                        for newkk in data["symbol_maps"][kk]:
+                    if kk in data["symbol_map"].keys():
+                        for newkk in data["symbol_map"][kk]:
                             g.transitions[int(k)][newkk] = int(vv)
                     else:
                         g.transitions[int(k)][kk] = int(vv)
