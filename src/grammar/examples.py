@@ -122,13 +122,14 @@ WAYBACK_GRAMMAR = """{
     "3": {"x": 2, "s": 5},
     "4": {"p": 3, "s": 5}
   }
-}"""
+}""" # ESTIMATED DIFFICULTY 3.5/4
 
 # word alphabets
 
 ALTERNATING_MUSTSTOP_LOOP_GRAMMAR = """{
   "num_states": 3,
-  "alphabet": ["must ", "stop "],
+  "alphabet": ["a", "b"],
+  "symbol_map": {"a": ["must "], "b": ["stop "]},
   "start_state": 0,
   "accept_states": [2],
   "transitions": {
@@ -140,7 +141,8 @@ ALTERNATING_MUSTSTOP_LOOP_GRAMMAR = """{
 
 ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR = """{
   "num_states": 3,
-  "alphabet": ["must ", "stop "],
+  "alphabet": ["a", "b"],
+  "symbol_map": {"a": ["must "], "b": ["stop "]},
   "start_state": 0,
   "accept_states": [2],
   "transitions": {
@@ -149,6 +151,21 @@ ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR = """{
     "2": {"a": 1, "b": 2},
   }
 }"""  # ESTIMATED DIFFICULTY 2+: poisoning with meaning
+
+WAYBACK_WORD_GRAMMAR = """{
+  "num_states": 6,
+  "alphabet": ["p", "s", "t", "v", "x"],
+  "symbol_map": {"p": ["do "], "s": ["?"], "t": ["have "], "v": ["not "], "x": ["baguette "]},
+  "start_state": 0,
+  "accept_states": [5],
+  "transitions": {
+    "0": {"t": 1, "v": 2},
+    "1": {"p": 1, "t": 3},
+    "2": {"x": 2, "v": 4},
+    "3": {"x": 2, "s": 5},
+    "4": {"p": 3, "s": 5}
+  }
+}""" # ESTIMATED DIFFICULTY 4+: words add misdirection
 
 # GPT-generated simple grammars
 
