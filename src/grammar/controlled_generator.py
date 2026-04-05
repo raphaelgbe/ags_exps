@@ -155,4 +155,5 @@ class ControlledFSM(BasicGrammar):
         print(f"Number of accept states: {len(self.accept_states)}")
         self.validate()
         print("The graph is validated!")
+        self.effective_alphabet = self._compute_effective_alphabet()
         # print(self.generate_report())

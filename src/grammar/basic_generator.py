@@ -13,6 +13,12 @@ class BasicGrammar:
 
         self.transitions = {s: {} for s in range(num_states)}
 
+    def _compute_effective_alphabet(self):
+        effective_alphabet = set()
+        for _, sym in self.transitions.items():
+            effective_alphabet.add(sym)
+        return effective_alphabet
+
     def is_valid(self, string):
         state = self.start_state
         for sym in string:
@@ -59,6 +65,7 @@ class BasicGrammar:
         data = {
             "num_states": self.num_states,
             "alphabet": self.alphabet,
+            "effective_alphabet": list(self._compute_effective_alphabet()),
             "start_state": self.start_state,
             "accept_states": list(self.accept_states),
             "transitions": self.transitions
@@ -72,6 +79,7 @@ class BasicGrammar:
             data = json.load(f)
         g = BasicGrammar(data["num_states"], data["alphabet"])
         g.start_state = data["start_state"]
+        g.effective_alphabet = set(data["effective_alphabet"])
         g.accept_states = set(data["accept_states"])
         g.transitions = {int(k): v for k, v in data["transitions"].items()}
         return g
