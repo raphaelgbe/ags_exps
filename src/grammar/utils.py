@@ -51,6 +51,7 @@ def grammar_complexity(grammar):
             G.add_edge(s, t)
 
     num_states = grammar.num_states
+    num_edges = G.size()
     avg_branching = np.mean([len(grammar.transitions[s]) for s in grammar.transitions])
 
     cycles = list(nx.simple_cycles(G))
@@ -63,6 +64,7 @@ def grammar_complexity(grammar):
 
     return {
         "num_states": num_states,
+        "num_edges": num_edges,
         "avg_branching": avg_branching,
         "num_cycles": num_cycles,
         "avg_cycle_length": avg_cycle_length,
