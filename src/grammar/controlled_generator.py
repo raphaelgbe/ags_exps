@@ -3,7 +3,7 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from basic_generator import BasicGrammar
+from src.grammar.basic_generator import BasicGrammar
 
 class ControlledFSM(BasicGrammar):
     def __init__(self, num_states=5, alphabet=("a", "b"), seed=None):
