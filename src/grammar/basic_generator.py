@@ -2,6 +2,7 @@ import json
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
+from collections import defaultdict, deque
 
 class BasicGrammar:
     def __init__(self, num_states=4, alphabet=("a", "b"), seed=None):
@@ -22,6 +23,8 @@ class BasicGrammar:
     def is_valid(self, string):
         state = self.start_state
         for sym in string:
+            if state not in self.transitions.keys():
+                return False
             if sym not in self.transitions[state]:
                 return False
             state = self.transitions[state][sym]
@@ -61,6 +64,24 @@ class BasicGrammar:
         new_string = valid_string[:i] + new_sym + valid_string[i+1:]
         return new_string if not self.is_valid(new_string) else None
 
+    def enumerate_valid_samples(self, max_len=5, early_stop_function=None):
+        outs = []
+        to_visit = deque()
+        to_visit.append((self.start_state, "", 0))
+        while True:
+            if not to_visit:
+                break
+            if early_stop_function and (early_stop_function(outs)):
+                break
+            s, curr, depth = to_visit.popleft()
+            if s not in self.transitions.keys():  # could happen e.g. for an accept state
+                continue
+            for sym, nxt in self.transitions[s].items():
+                outs.append(curr + sym)
+                if depth < max_len:
+                    to_visit.append((nxt, curr + sym, depth + 1))
+        return outs
+
     def to_json(self, path):
         data = {
             "num_states": self.num_states,
@@ -74,12 +95,27 @@ class BasicGrammar:
             json.dump(data, f, indent=2)
 
     @staticmethod
-    def from_json(path):
-        with open(path) as f:
-            data = json.load(f)
+    def _get_effective_alphabet_from_data(data):
+        if "effective_alphabet" in data.keys():
+            return data["effective_alphabet"]
+        effective_alphabet = data["alphabet"]
+        if "symbol_map" in data.keys():
+            for source, targets in data["symbol_map"].items():
+                effective_alphabet.remove(source)
+                effective_alphabet.extend([t for t in targets])
+        return set(effective_alphabet)
+
+    @staticmethod
+    def from_json(input_text, is_path=True):
+        if is_path:
+            path = input_text
+            with open(path) as f:
+                data = json.load(f)
+        else:
+            data = json.loads(input_text)
         g = BasicGrammar(data["num_states"], data["alphabet"])
         g.start_state = data["start_state"]
-        g.effective_alphabet = set(data["effective_alphabet"])
+        g.effective_alphabet = BasicGrammar._get_effective_alphabet_from_data(data)
         g.accept_states = set(data["accept_states"])
         if "symbol_map" in data.keys():
             g.transitions = {}
@@ -95,14 +131,41 @@ class BasicGrammar:
             g.transitions = {int(k): {kk: int(vv) for kk, vv in v.items()} for k, v in data["transitions"].items()}
         return g
 
-    def visualize(self):
-        G = nx.DiGraph()
+    def visualize_with_pygraphviz(self, filename="fsm.png"):
+        from networkx.drawing.nx_agraph import to_agraph
+        G = nx.MultiDiGraph()
+
         for s in self.transitions:
             for sym, t in self.transitions[s].items():
                 G.add_edge(s, t, label=sym)
 
+        A = to_agraph(G)
+
+        # Optional styling (nice for FSMs)
+        A.graph_attr.update(rankdir="LR")  # left-to-right layout
+        A.node_attr.update(shape="circle")
+
+        # Draw using Graphviz
+        A.layout("dot")
+        A.draw(filename)
+
+    def visualize(self):
+        G = nx.DiGraph()
+        edge_map = defaultdict(list)
+
+        for s in self.transitions:
+            for sym, t in self.transitions[s].items():
+                if s <= t:
+                    edge_map[(s,t)].append(sym + "→")
+                else:
+                    edge_map[(t,s)].append(sym + "←")
+
+        for (s, t), syms in edge_map.items():
+            G.add_edge(s, t, label=",".join(syms))
+
         pos = nx.spring_layout(G)
-        nx.draw(G, pos, with_labels=True, node_color="lightblue")
+
+        nx.draw_networkx(G, pos, with_labels=True, node_color="lightblue", connectionstyle="arc3, rad=0.2")
 
         edge_labels = {(u, v): d["label"] for u, v, d in G.edges(data=True)}
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
