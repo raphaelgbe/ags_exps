@@ -1,7 +1,9 @@
 # lowercase alphabets:
 ALL_LOWERCASE_LETTERS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
-SIMPLE_LOOP_GRAMMAR = """{
+GRAMMARS = {}
+
+GRAMMARS["SIMPLE_LOOP_GRAMMAR"] = """{
   "num_states": 1,
   "alphabet": ["a"],
   "start_state": 0,
@@ -11,7 +13,7 @@ SIMPLE_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 1
 
-ALTERNATING_AB_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_AB_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "start_state": 0,
@@ -23,7 +25,7 @@ ALTERNATING_AB_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 1.5
 
-ALTERNATING_ABEXPONENT_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_ABEXPONENT_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "start_state": 0,
@@ -35,7 +37,7 @@ ALTERNATING_ABEXPONENT_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 2
 
-ALTERNATING_CONSONANT_VOWEL_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_CONSONANT_VOWEL_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": "bcdfghjklmnpqrstvwxyz", "b": "aeiou"},
@@ -48,7 +50,7 @@ ALTERNATING_CONSONANT_VOWEL_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 2 : simple structure, larger alphabet
 
-ALTERNATING_CONSONANT_VOWELEXPONENT_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_CONSONANT_VOWELEXPONENT_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": "bcdfghjklmnpqrstvwxyz", "b": "aeiou"},
@@ -61,7 +63,7 @@ ALTERNATING_CONSONANT_VOWELEXPONENT_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 3
 
-ALTERNATING_GIBBEGIBBERISH_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_GIBBEGIBBERISH_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": "qdnblvtcxjeys", "b": "afghikmopruwz"},
@@ -74,7 +76,7 @@ ALTERNATING_GIBBEGIBBERISH_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 3: no structure in alphabet distribution
 
-ALTERNATING_GIBBEGIBBERISHEXPONENT_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_GIBBEGIBBERISHEXPONENT_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": "qdnblvtcxjeys", "b": "afghikmopruwz"},
@@ -88,7 +90,7 @@ ALTERNATING_GIBBEGIBBERISHEXPONENT_LOOP_GRAMMAR = """{
 }"""  # ESTIMATED DIFFICULTY 4: no structure in alphabet distribution
 
 # derived from https://www.sciencedirect.com/science/article/pii/S0028393217303160:
-LADDER_GRAMMAR = """{
+GRAMMARS["LADDER_GRAMMAR"] = """{
   "num_states": 12,
   "alphabet": ["a", "b", "c", "d", "e"],
   "start_state": 0,
@@ -110,7 +112,7 @@ LADDER_GRAMMAR = """{
 
 
 # from https://en.wikipedia.org/wiki/Artificial_grammar_learning:
-WAYBACK_GRAMMAR = """{
+GRAMMARS["WAYBACK_GRAMMAR"] = """{
   "num_states": 6,
   "alphabet": ["p", "s", "t", "v", "x"],
   "start_state": 0,
@@ -126,7 +128,7 @@ WAYBACK_GRAMMAR = """{
 
 # word alphabets
 
-ALTERNATING_MUSTSTOP_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_MUSTSTOP_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": ["must "], "b": ["stop "]},
@@ -139,7 +141,7 @@ ALTERNATING_MUSTSTOP_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 2: poisoning with meaning
 
-ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR = """{
+GRAMMARS["ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR"] = """{
   "num_states": 3,
   "alphabet": ["a", "b"],
   "symbol_map": {"a": ["must "], "b": ["stop "]},
@@ -152,7 +154,7 @@ ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR = """{
   }
 }"""  # ESTIMATED DIFFICULTY 2+: poisoning with meaning
 
-WAYBACK_WORD_GRAMMAR = """{
+GRAMMARS["WAYBACK_WORD_GRAMMAR"] = """{
   "num_states": 6,
   "alphabet": ["p", "s", "t", "v", "x"],
   "symbol_map": {"p": ["do "], "s": ["?"], "t": ["have "], "v": ["not "], "x": ["baguette "]},
