@@ -21,7 +21,7 @@ GRAMMARS["ALTERNATING_AB_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1},
+    "2": {"a": 1}
   }
 }"""  # ESTIMATED DIFFICULTY 1.5
 
@@ -33,7 +33,7 @@ GRAMMARS["ALTERNATING_ABEXPONENT_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1, "b": 2},
+    "2": {"a": 1, "b": 2}
   }
 }"""  # ESTIMATED DIFFICULTY 2
 
@@ -46,7 +46,7 @@ GRAMMARS["ALTERNATING_CONSONANT_VOWEL_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1},
+    "2": {"a": 1}
   }
 }"""  # ESTIMATED DIFFICULTY 2 : simple structure, larger alphabet
 
@@ -59,7 +59,7 @@ GRAMMARS["ALTERNATING_CONSONANT_VOWELEXPONENT_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1, "b": 2},
+    "2": {"a": 1, "b": 2}
   }
 }"""  # ESTIMATED DIFFICULTY 3
 
@@ -72,7 +72,7 @@ GRAMMARS["ALTERNATING_GIBBEGIBBERISH_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1},
+    "2": {"a": 1}
   }
 }"""  # ESTIMATED DIFFICULTY 3: no structure in alphabet distribution
 
@@ -85,7 +85,7 @@ GRAMMARS["ALTERNATING_GIBBEGIBBERISHEXPONENT_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1, "b": 2},
+    "2": {"a": 1, "b": 2}
   }
 }"""  # ESTIMATED DIFFICULTY 4: no structure in alphabet distribution
 
@@ -94,7 +94,7 @@ GRAMMARS["LADDER_GRAMMAR"] = """{
   "num_states": 12,
   "alphabet": ["a", "b", "c", "d", "e"],
   "start_state": 0,
-  "accept_states": [11]],
+  "accept_states": [11],
   "transitions": {
     "0": {"c": 1, "a": 3},
     "1": {"d": 2},
@@ -137,7 +137,7 @@ GRAMMARS["ALTERNATING_MUSTSTOP_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1},
+    "2": {"a": 1}
   }
 }"""  # ESTIMATED DIFFICULTY 2: poisoning with meaning
 
@@ -150,7 +150,7 @@ GRAMMARS["ALTERNATING_MUSTSTOPEXPONENT_LOOP_GRAMMAR"] = """{
   "transitions": {
     "0": {"a": 1},
     "1": {"b": 2},
-    "2": {"a": 1, "b": 2},
+    "2": {"a": 1, "b": 2}
   }
 }"""  # ESTIMATED DIFFICULTY 2+: poisoning with meaning
 
