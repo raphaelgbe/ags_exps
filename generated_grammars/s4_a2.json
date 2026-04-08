@@ -1,0 +1,31 @@
+{
+  "num_states": 4,
+  "alphabet": [
+    "v",
+    "w"
+  ],
+  "effective_alphabet": [
+    "v",
+    "w"
+  ],
+  "start_state": 0,
+  "accept_states": [
+    2
+  ],
+  "transitions": {
+    "0": {
+      "w": 1,
+      "v": 2
+    },
+    "1": {
+      "w": 3
+    },
+    "2": {
+      "w": 3,
+      "v": 3
+    },
+    "3": {
+      "v": 0
+    }
+  }
+}

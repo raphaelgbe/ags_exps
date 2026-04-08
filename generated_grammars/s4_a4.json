@@ -1,0 +1,38 @@
+{
+  "num_states": 4,
+  "alphabet": [
+    "y",
+    "t",
+    "c",
+    "m"
+  ],
+  "effective_alphabet": [
+    "t",
+    "c",
+    "y",
+    "m"
+  ],
+  "start_state": 0,
+  "accept_states": [
+    3
+  ],
+  "transitions": {
+    "0": {
+      "y": 1,
+      "c": 2,
+      "m": 2
+    },
+    "1": {
+      "m": 3,
+      "t": 2,
+      "c": 3
+    },
+    "2": {
+      "t": 2,
+      "y": 3
+    },
+    "3": {
+      "t": 0
+    }
+  }
+}
