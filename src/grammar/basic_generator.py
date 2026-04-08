@@ -16,8 +16,9 @@ class BasicGrammar:
 
     def _compute_effective_alphabet(self):
         effective_alphabet = set()
-        for _, sym in self.transitions.items():
-            effective_alphabet.add(sym)
+        for _, dct in self.transitions.items():
+            for sym, _ in dct.items():
+                effective_alphabet.add(sym)
         return effective_alphabet
 
     def is_valid(self, string):
@@ -81,6 +82,17 @@ class BasicGrammar:
                 if depth < max_len:
                     to_visit.append((nxt, curr + sym, depth + 1))
         return outs
+
+    def to_jsondumps(self):
+        data = {
+            "num_states": self.num_states,
+            "alphabet": self.alphabet,
+            "effective_alphabet": list(self._compute_effective_alphabet()),
+            "start_state": self.start_state,
+            "accept_states": list(self.accept_states),
+            "transitions": self.transitions
+        }
+        return json.dumps(data)
 
     def to_json(self, path):
         data = {
@@ -150,6 +162,7 @@ class BasicGrammar:
         A.draw(filename)
 
     def visualize(self):
+        print(f"Accept states:", self.accept_states)
         G = nx.DiGraph()
         edge_map = defaultdict(list)
 
