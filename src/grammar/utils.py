@@ -13,7 +13,7 @@ def count_duplicates_in_string_list(strings):
         "duplicates": sum(v-1 for v in counts.values())
     }
 
-def state_coverage(grammar, dataset):
+def state_coverage(grammar, dataset, get_score=True):
     visited = set()
     
     for s in dataset:
@@ -23,16 +23,14 @@ def state_coverage(grammar, dataset):
             if sym in grammar.transitions[state]:
                 state = grammar.transitions[state][sym]
                 visited.add(state)
-    
-    return len(visited) / grammar.num_states
 
-def transition_coverage(grammar, dataset):
+    if get_score:
+        return len(visited) / grammar.num_states
+    else:
+        return visited
+
+def transition_coverage(grammar, dataset, get_score=True):
     visited = set()
-    total = 0
-    
-    for s in grammar.transitions:
-        for sym in grammar.transitions[s]:
-            total += 1
     
     for string in dataset:
         state = grammar.start_state
@@ -40,8 +38,22 @@ def transition_coverage(grammar, dataset):
             if sym in grammar.transitions[state]:
                 visited.add((state, sym))
                 state = grammar.transitions[state][sym]
-    
-    return len(visited) / total
+
+    if get_score:
+        total = 0
+        for s in grammar.transitions:
+            for sym in grammar.transitions[s]:
+                total += 1
+        return len(visited) / total
+    else:
+        return visited
+
+def estimate_valid_sample_difficulty(sample, grammar, dataset):
+    training_transitions_visited = transition_coverage(grammar, dataset, get_score=False)
+    sample_transitions_visited = transition_coverage(grammar, [sample], get_score=False)
+    # NOTE: sample could be similar to something in dataset despite different path:
+    distances = [edit_distance(sample, d) for d in dataset]
+    return (0.5 * min(distances) + 0.5 * len(training_transitions_visited.intersection(sample_transitions_visited))) / len(sample)
 
 def grammar_complexity(grammar):
     G = nx.DiGraph()
