@@ -39,7 +39,7 @@ class ControlledFSM(BasicGrammar):
                 if not possible_letters:
                     break
                 num_extra_edges += 1
-                sym = self.rng.choice(possible_letters)
+                sym = self.rng.choice(list(possible_letters))
                 possible_letters.remove(sym)
                 self.transitions[s][sym] = t
         self.num_extra_forward_edges = num_extra_edges
@@ -47,13 +47,15 @@ class ControlledFSM(BasicGrammar):
     def add_backward_edges(self, num_new_edges):
         self.num_backward_edges_created = 0
         for _ in range(num_new_edges):
-            state = self.rng.randint(1, len(self.num_states))
+            state = self.rng.randint(1, self.num_states)
             candidate = self.rng.randint(0, state - 1)
+            if state not in self.transitions.keys():
+                self.transitions[state] = {}
             possible_letters = {l for l in self.alphabet if l not in self.transitions[state].keys()}
             if (not possible_letters) or (candidate in self.transitions[state].values()):
                 continue
             self.num_backward_edges_created += 1
-            self.transitions[state][self.rng.choice(possible_letters)] = candidate
+            self.transitions[state][self.rng.choice(list(possible_letters))] = candidate
 
     def add_loops(self, num_loops=2, loop_length_range=(2, 4)):
         num_loops_created = 0
@@ -71,7 +73,7 @@ class ControlledFSM(BasicGrammar):
                     if not possible_letters:
                         loop_successfully_created = False
                         break
-                    sym = self.rng.choice(possible_letters)
+                    sym = self.rng.choice(list(possible_letters))
                     self.transitions[states[i]][sym] = states[(i + 1) % length]
             num_loops_created += int(loop_successfully_created)
         self.num_loops_created = num_loops_created
@@ -111,7 +113,7 @@ class ControlledFSM(BasicGrammar):
                 else:
                     # force a path to an accept state
                     target = self.rng.choice(list(self.accept_states))
-                    sym = self.rng.choice(possible_letters)
+                    sym = self.rng.choice(list(possible_letters))
                     self.transitions[s][sym] = target
 
     def validate(self):
