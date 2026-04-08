@@ -52,6 +52,32 @@ class BasicGrammar:
             return random.choices(candidates, weights=weights)[0]
         return None
     
+    def generate_plausible_invalid(self, expected_len, num_disruptions_range=(1,1), num_tries=100):
+        num_disruptions = random.randint(*num_disruptions_range)
+        num_disruptions_made = 0
+        if (1 > num_disruptions) or (num_disruptions > expected_len):
+            raise ValueError("num_disruptions_range should be between 1 and expected_len")
+        disruption_points = set(random.sample(range(expected_len), num_disruptions))
+        for _ in range(num_tries):
+            state = self.start_state
+            s = ""
+            for i in range(expected_len):
+                if not self.transitions[state]:
+                    break
+                sym = self.rng.choice(list(self.transitions[state].keys()))
+                sym_to_add = sym
+                if i in disruption_points:
+                    possible_letters = {l for l in self.alphabet if l not in self.transitions[state].keys()}
+                    if possible_letters:
+                        sym_to_add = self.rng.choice(list(possible_letters))
+                        num_disruptions_made += 1
+                    else:
+                        disruption_points.add(i+1)
+                s += sym_to_add
+                state = self.transitions[state][sym]
+            if (i == expected_len-1) and (not self.is_valid(s)):
+                return s, num_disruptions_made
+
     def generate_invalid(self, max_len=6, attempts=100):
         for _ in range(attempts):
             s = "".join(self.rng.choice(self.alphabet) for _ in range(self.rng.randint(1, max_len)))
