@@ -38,6 +38,8 @@ class BasicGrammar:
             state = self.start_state
             s = ""
             for _ in range(self.rng.randint(1, max_len)):
+                if state not in self.transitions:
+                    break
                 if not self.transitions[state]:
                     break
                 if (state in self.accept_states) and generate_candidates:
@@ -62,6 +64,9 @@ class BasicGrammar:
             state = self.start_state
             s = ""
             for i in range(expected_len):
+                if not state in self.transitions:
+                    state = self.rng.choice(range(self.num_states))
+                    continue
                 if not self.transitions[state]:
                     break
                 sym = self.rng.choice(list(self.transitions[state].keys()))

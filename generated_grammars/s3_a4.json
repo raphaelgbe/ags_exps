@@ -1,0 +1,33 @@
+{
+  "num_states": 3,
+  "alphabet": [
+    "m",
+    "x",
+    "a",
+    "r",
+    "b",
+    "j"
+  ],
+  "effective_alphabet": [
+    "r",
+    "m",
+    "x",
+    "a"
+  ],
+  "start_state": 0,
+  "accept_states": [
+    0
+  ],
+  "transitions": {
+    "0": {
+      "x": 1,
+      "r": 2
+    },
+    "1": {
+      "a": 2
+    },
+    "2": {
+      "m": 0
+    }
+  }
+}
