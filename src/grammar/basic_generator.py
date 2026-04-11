@@ -23,6 +23,15 @@ class BasicGrammar:
 
     def is_valid(self, string):
         state = self.start_state
+        # need to handle special case when symbols are word: didn't design it properly so need an adhoc fix, assuming that sym.strip() isn't already in the alphabet (unless it's sym itself) if sym is:
+        alphabet = self._compute_effective_alphabet()
+        if any(sym for sym in alphabet if len(sym) > 1):
+            string = [sym.strip() for sym in string.split()]
+            for state, dct in transition.items():
+                updatedct = {}
+                for sym, stateprime in dct.items():
+                    updatedct[sym.strip()] = stateprime
+                dct.update(updatedct)
         for sym in string:
             if state not in self.transitions.keys():
                 return False
@@ -72,7 +81,7 @@ class BasicGrammar:
                 sym = self.rng.choice(list(self.transitions[state].keys()))
                 sym_to_add = sym
                 if i in disruption_points:
-                    possible_letters = {l for l in self.alphabet if l not in self.transitions[state].keys()}
+                    possible_letters = {l for l in self._compute_effective_alphabet() if l not in self.transitions[state].keys()}
                     if possible_letters:
                         sym_to_add = self.rng.choice(list(possible_letters))
                         num_disruptions_made += 1
