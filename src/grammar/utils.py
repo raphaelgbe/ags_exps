@@ -31,8 +31,18 @@ def state_coverage(grammar, dataset, get_score=True):
 
 def transition_coverage(grammar, dataset, get_score=True):
     visited = set()
-    
+    # need to handle special case when symbols are word: didn't design it properly so need an adhoc fix, assuming that sym.strip() isn't already in the alphabet (unless it's sym itself) if sym is:
+    alphabet = grammar._compute_effective_alphabet()
+    need_to_split_strings = any(sym for sym in alphabet if len(sym) > 1)
+    if need_to_split_strings:
+        for state, dct in grammar.transitions.items():
+            updatedct = {}
+            for sym, stateprime in dct.items():
+                updatedct[sym.strip()] = stateprime
+            dct.update(updatedct)
     for string in dataset:
+        if need_to_split_strings:
+            string = [sym.strip() for sym in string.split()]
         state = grammar.start_state
         for sym in string:
             if sym in grammar.transitions[state]:
