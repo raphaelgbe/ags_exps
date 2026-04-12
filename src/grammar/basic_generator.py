@@ -27,7 +27,7 @@ class BasicGrammar:
         alphabet = self._compute_effective_alphabet()
         if any(sym for sym in alphabet if len(sym) > 1):
             string = [sym.strip() for sym in string.split()]
-            for state, dct in transition.items():
+            for state, dct in self.transitions.items():
                 updatedct = {}
                 for sym, stateprime in dct.items():
                     updatedct[sym.strip()] = stateprime
