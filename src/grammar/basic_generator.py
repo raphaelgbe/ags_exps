@@ -115,10 +115,11 @@ class BasicGrammar:
             if early_stop_function and (early_stop_function(outs)):
                 break
             s, curr, depth = to_visit.popleft()
+            if s in self.accept_states:
+                outs.append(curr)
             if s not in self.transitions.keys():  # could happen e.g. for an accept state
                 continue
             for sym, nxt in self.transitions[s].items():
-                outs.append(curr + sym)
                 if depth < max_len:
                     to_visit.append((nxt, curr + sym, depth + 1))
         return outs
